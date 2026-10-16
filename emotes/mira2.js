@@ -330,7 +330,9 @@ const PREMIUM = [
   { id: '15-ty-kotik', label: 'ТЫ КОТИК', eyes: 'heart', mouth: 'cat', props: ['kitty'], blush: true },
 ];
 
-(async () => {
+module.exports = { extraDefs, withExtraDefs, eyeShift, paw, coin, flame, openHand, pawHand, confetti, txt, catMira };
+
+if (require.main === module) (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: SIZE, height: SIZE } });
   const jobs = [
