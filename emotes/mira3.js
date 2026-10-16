@@ -22,7 +22,7 @@ const HEAD = 'translate(256 236) scale(1.12) translate(-256 -236)';
 const FACE_FX = new Set(['shades', 'magnifier', 'headphones', 'sweat']);
 
 // Мягкая ресница вместо «нахмуренной»: почти ровная дуга по верху глаза.
-const SOFT_LASH = '<path d="M 30 -20 Q 2 -46 -30 -24 L -40 -31" fill="none" stroke="#3b2418" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>';
+const SOFT_LASH = '<path d="M 20 -30 Q 0 -44 -28 -27 L -40 -33" fill="none" stroke="#3b2418" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>';
 const soft = (s) => s.split(m.lash).join(SOFT_LASH);
 
 // ---------- дополнительные градиенты и узоры ----------
@@ -76,6 +76,8 @@ m.EYES.shock = () => at(EL, shockEye) + mirror(ER, shockEye);
 Object.assign(m.MOUTHS, {
   grin: () => m.MOUTHS.open()
     + `<path d="M ${M.x - 29} ${M.y - 7} Q ${M.x} ${M.y + 1} ${M.x + 29} ${M.y - 7} L ${M.x + 26} ${M.y + 4} Q ${M.x} ${M.y + 12} ${M.x - 26} ${M.y + 4} Z" fill="#fff"/>`,
+  smirk: () => `<path d="M ${M.x - 30} ${M.y + 2} Q ${M.x - 2} ${M.y + 20} ${M.x + 32} ${M.y - 12}" fill="none" stroke="${LINE}" stroke-width="10" stroke-linecap="round"/>
+    <path d="M ${M.x + 4} ${M.y + 9} L ${M.x + 11} ${M.y + 22} L ${M.x + 16} ${M.y + 5}" fill="#fff" stroke="${LINE}" stroke-width="4" stroke-linejoin="round"/>`,
   scream: () => `<ellipse cx="${M.x}" cy="${M.y + 10}" rx="24" ry="31" fill="#a3263f" stroke="${LINE}" stroke-width="6"/>
     <ellipse cx="${M.x}" cy="${M.y + 29}" rx="14" ry="8" fill="#ff7f9a"/>`,
 });
@@ -92,7 +94,7 @@ const crownShape = () => `
   <circle cx="0" cy="-42" r="6" fill="#fff3a0" stroke="#7a4a00" stroke-width="3"/>
   <circle cx="60" cy="-26" r="6" fill="#fff3a0" stroke="#7a4a00" stroke-width="3"/>
   <path d="M -40 30 H 40" stroke="#fff6c8" stroke-width="3" opacity=".8"/>
-  <path d="M -44 -6 L -36 18" stroke="#fff" stroke-width="4" opacity=".7" stroke-linecap="round"/>`;
+  <path d="M -50 -8 L -45 14" stroke="#fff" stroke-width="4" opacity=".7" stroke-linecap="round"/>`;
 // «корона чата»: вместо рубина белый пузырь сообщения
 const chatCrown = () => crownShape().replace(RUBY, `<rect x="-17" y="-22" width="34" height="24" rx="9" fill="#fff" stroke="#ff4f8b" stroke-width="4"/>
   <circle cx="-8" cy="-10" r="3" fill="#ff4f8b"/><circle cx="0" cy="-10" r="3" fill="#ff4f8b"/><circle cx="8" cy="-10" r="3" fill="#ff4f8b"/>`);
@@ -156,14 +158,20 @@ Object.assign(m.PROPS, {
       <path d="M 392 20 L 472 20 L 362 470 L 212 470 Z" fill="url(#beam)"/></g>`
     + star(80, 160, 14, '#fff3a0', '#b07a00') + star(120, 86, 9, '#fff3a0', '#b07a00') + star(60, 300, 10, '#fff3a0', '#b07a00'),
   laurel: () => {
-    let s = '';
-    for (let i = 0; i < 7; i++) {
-      const deg = 135 + i * 13, a = (deg * Math.PI) / 180;
-      const x = 256 + 200 * Math.cos(a), y = 250 + 200 * Math.sin(a);
-      const leaf = (lx, rot) => `<ellipse cx="${lx.toFixed(1)}" cy="${y.toFixed(1)}" rx="9" ry="20" fill="url(#gold)" stroke="#7a4a00" stroke-width="3" transform="rotate(${rot} ${lx.toFixed(1)} ${y.toFixed(1)})"/>`;
-      s += leaf(x, deg + 60) + leaf(512 - x, -(deg + 60));
+    const R = 196, pt = (d, r) => [256 + r * Math.cos((d * Math.PI) / 180), 250 + r * Math.sin((d * Math.PI) / 180)];
+    const [sx, sy] = pt(138, R), [ex, ey] = pt(222, R);
+    const arc = `M ${sx.toFixed(1)} ${sy.toFixed(1)} A ${R} ${R} 0 0 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+    let s = `<path d="${arc}" fill="none" stroke="#7a4a00" stroke-width="8" stroke-linecap="round"/>
+      <path d="${arc}" fill="none" stroke="#f2c14b" stroke-width="3" stroke-linecap="round"/>`;
+    for (let i = 0; i < 6; i++) {
+      const d = 146 + i * 14;
+      for (const side of [-1, 1]) {
+        const [x, y] = pt(d, R + side * 10);
+        s += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="17" ry="7.5" fill="url(#gold)" stroke="#7a4a00" stroke-width="3"
+          transform="rotate(${d + 90 - side * 32} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;
+      }
     }
-    return s;
+    return s + `<g transform="translate(512 0) scale(-1 1)">${s}</g>`;
   },
   goldStar: () => sleeve(392, 366, 16) + `<g transform="rotate(-8 424 296)">
       <polygon points="${m.starPts(424, 296, 68)}" fill="url(#gold)" stroke="#7a4a00" stroke-width="8" stroke-linejoin="round"/>
@@ -180,7 +188,7 @@ Object.assign(m.PROPS, {
     <circle cx="${EL}" cy="${EYE_Y}" r="50" fill="none" stroke="#7a4a00" stroke-width="17"/>
     <circle cx="${EL}" cy="${EYE_Y}" r="50" fill="none" stroke="url(#gold)" stroke-width="9"/>
     <path d="M ${EL - 30} ${EYE_Y - 20} q 12 -16 32 -18" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9"/>`,
-  notesElite: () => note(80, 150, 1.1) + note(66, 296, 0.8, '#3a9de0') + note(416, 168, 0.9, '#f3c14b') + sparkle(452, 226, 12, '#fff'),
+  notesElite: () => note(80, 150, 1.1) + note(66, 296, 0.8, '#3a9de0') + note(440, 262, 0.8, '#f3c14b') + sparkle(436, 196, 9, '#fff'),
   headphones: () => `
     <path d="M 134 236 C 118 30, 394 30, 378 236" fill="none" stroke="#2a0b4a" stroke-width="22" stroke-linecap="round"/>
     <path d="M 134 236 C 118 30, 394 30, 378 236" fill="none" stroke="#ff4f8b" stroke-width="12" stroke-linecap="round"/>
@@ -193,17 +201,27 @@ Object.assign(m.PROPS, {
     <path d="M 392 312 A 46 46 0 0 1 430 294" fill="none" stroke="#fff" stroke-width="5" opacity=".35" stroke-linecap="round"/>
     <circle cx="428" cy="340" r="19" fill="#ff4f8b"/><circle cx="428" cy="340" r="4" fill="#fff"/>`
     + sleeve(384, 384, 18) + palm(384, 374, 22) + finger(398, 362, 22, 52),
-  flowers: () => miniRose(86, 176, 20) + miniRose(118, 106, 14) + miniRose(432, 150, 16) + miniRose(70, 292, 14)
+  flowers: () => miniRose(86, 176, 20) + miniRose(432, 150, 16) + miniRose(70, 292, 14)
     + sparkle(470, 220, 10, '#fff') + sparkle(160, 50, 10, '#fff'),
-  clap: () => cuff(418, 322, 8) + cuff(458, 322, -8) + `
-    <g transform="rotate(8 418 330)"><rect x="402" y="232" width="32" height="104" rx="16" fill="${SKIN}" stroke="${LINE}" stroke-width="6"/>
-      <rect x="388" y="282" width="18" height="40" rx="9" fill="${SKIN}" stroke="${LINE}" stroke-width="5" transform="rotate(-25 397 302)"/></g>
-    <g transform="rotate(-8 458 330)"><rect x="442" y="232" width="32" height="104" rx="16" fill="${SKIN}" stroke="${LINE}" stroke-width="6"/>
-      <rect x="470" y="282" width="18" height="40" rx="9" fill="${SKIN}" stroke="${LINE}" stroke-width="5" transform="rotate(25 479 302)"/></g>`
-    + strokes('M 418 212 l -10 -16 M 438 204 v -20 M 458 212 l 10 -16'),
-  crownHold: () => cuff(418, 316, 6) + `<g transform="translate(418 256) rotate(8) scale(1.1)">${chatCrown()}</g>`
+  clap: () => {
+    const hand = (x, y, rot, dir) => `<g transform="translate(${x} ${y}) rotate(${rot})">
+      <rect x="-22" y="-104" width="44" height="104" rx="20" fill="${SKIN}" stroke="${LINE}" stroke-width="6"/>
+      <rect x="${dir > 0 ? 8 : -26}" y="-52" width="18" height="44" rx="9" fill="${SKIN}" stroke="${LINE}" stroke-width="5" transform="rotate(${dir * 28} ${dir * 17} -30)"/>
+      <path d="M -10 -90 V -60 M 0 -96 V -60 M 10 -90 V -60" stroke="${LINE}" stroke-width="3" stroke-linecap="round" opacity=".45"/></g>`;
+    const pts = [];
+    for (let i = 0; i < 16; i++) {
+      const r = i % 2 ? 11.7 : 26, a = ((i * 22.5 - 90) * Math.PI) / 180;
+      pts.push(`${(434 + r * Math.cos(a)).toFixed(1)},${(236 + r * Math.sin(a)).toFixed(1)}`);
+    }
+    return cuff(400, 330, 14, 48, 120) + cuff(468, 330, -14, 48, 120)
+      + hand(400, 336, -14, 1) + hand(468, 336, 14, -1)
+      + `<polygon points="${pts.join(' ')}" fill="#fff6a8" stroke="#b36b00" stroke-width="5" stroke-linejoin="round"/>`
+      + strokes('M 408 196 l -6 -18 M 434 188 v -22 M 460 196 l 6 -18');
+  },
+  crownHold: () => `<g transform="translate(4 12)">` + cuff(418, 316, 6) + `<g transform="translate(418 256) rotate(8)">${chatCrown()}</g>`
     + palm(418, 320, 24) + finger(398, 310, 18, -12) + finger(412, 306, 20, -4) + finger(426, 306, 20, 4) + finger(440, 310, 18, 12)
-    + strokes('M 392 192 l -8 -16 M 418 184 v -20 M 444 192 l 8 -16', 6) + sparkle(474, 196, 12, '#fff'),
+    + strokes('M 392 192 l -8 -16 M 418 184 v -20 M 444 192 l 8 -16', 6) + sparkle(474, 196, 12, '#fff') + '</g>',
+  inviteL: () => `<g transform="translate(-24 -8)">${m.PROPS.invite()}</g>`,
   flash: () => raysAround(256, 230, 16, 0, 320, '#fff', 0.16),
   shockFx: () => {
     const d = 'M 72 150 L 108 172 M 62 224 L 104 226 M 74 298 L 108 280 M 440 150 L 404 172 M 450 224 L 408 226 M 438 298 L 404 280';
@@ -221,7 +239,7 @@ Object.assign(m.PROPS, {
       }
       return p.join(' ');
     })()}" fill="#ffe14a" stroke="#b36b00" stroke-width="5" stroke-linejoin="round"/>
-    ${sleeve(420, 340, 10)}
+    ${cuff(418, 330, 12, 60, 130)}
     <rect x="382" y="278" width="92" height="84" rx="26" fill="${SKIN}" stroke="${LINE}" stroke-width="7"/>
     <path d="M 405 282 V 318 M 428 280 V 318 M 451 282 V 318" stroke="${LINE}" stroke-width="4" stroke-linecap="round"/>
     <rect x="386" y="318" width="72" height="28" rx="14" fill="${SKIN}" stroke="${LINE}" stroke-width="5"/>`,
@@ -265,7 +283,7 @@ const leoEars = () => `
   <path d="M 366 140 L 362 34 L 280 98 Z" fill="#2a2a2a" stroke="#111" stroke-width="8" stroke-linejoin="round"/>
   <path d="M 350 118 L 348 64 L 304 98 Z" fill="#ff9fc8"/>`;
 
-const defaultFsz = (text) => Math.min(60, Math.round(390 / (text.length * 0.68)));
+const defaultFsz = (text) => Math.min(54, Math.round(390 / (text.length * 0.68)));
 const ribbon3 = (text, fsz) => {
   const o = Math.round(fsz * 0.35);
   return `
@@ -288,7 +306,7 @@ function eliteMira(e, fsz = defaultFsz(e.label)) {
   const run = (list) => list.map((p) => m.PROPS[p]()).join('');
   const defs = m.defs.replace('id="sweater"', 'id="sweater-blue"').replace('</defs>', `${m2.extraDefs}${defs3}</defs>`);
   const crown = e.crown === false ? ''
-    : `<g transform="${e.crownT || 'translate(256 28)'}">${crownShape()}</g>${e.crownFx || sparkle(306, 8, 10, '#fff')}`;
+    : `<g transform="${e.crownT || 'translate(256 28)'}">${crownShape()}</g>${e.crownFx || sparkle(322, 24, 9, '#fff')}`;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 512 512">
     ${defs}
     <g filter="url(#sticker)" transform="translate(256 258) scale(.86) translate(-256 -250)">
@@ -324,7 +342,7 @@ const ELITE = [
   { id: '05-vizhu-tebya', label: 'ВИЖУ ТЕБЯ', eyes: 'wink', mouth: 'cat', props: ['likeHearts', 'magnifier'] },
   { id: '06-hit', label: 'ХИТ!', eyes: 'happy', mouth: 'open', props: ['notesElite', 'headphones', 'vinyl'] },
   { id: '07-bravo', label: 'БРАВО!', eyes: 'happy', mouth: 'open', props: ['flowers', 'clap'], blush: true },
-  { id: '08-korol-chata', label: 'КОРОЛЬ ЧАТА', eyes: 'sly', mouth: 'fang', props: ['invite', 'crownHold'], crown: false },
+  { id: '08-korol-chata', label: 'КОРОЛЬ ЧАТА', eyes: 'sly', mouth: 'smirk', props: ['inviteL', 'crownHold'], crown: false },
   { id: '09-shok', label: 'ШОК!', eyes: 'shock', mouth: 'scream', props: ['flash', 'shockFx', 'sweat'],
     crownT: 'translate(300 34) rotate(22)',
     crownFx: '<path d="M 226 14 q -10 14 -2 28 M 210 26 q -8 10 -2 20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>' },
