@@ -139,6 +139,7 @@ const EYES = {
     <path d="M 176 262 q -14 36 0 52 q 14 -16 0 -52 Z" fill="#9fe2ff" stroke="#2a8fd6" stroke-width="4"/>
     <path d="M 336 262 q -14 36 0 52 q 14 -16 0 -52 Z" fill="#9fe2ff" stroke="#2a8fd6" stroke-width="4"/>`,
   shy: () => at(EL, animeEye()) + mirror(ER, animeEye()) + browsSad(),
+  sleepy: () => at(EL, closedWink) + mirror(ER, closedWink) + brow(EL, -2) + brow(ER, -2),
 };
 
 // ---------- рты ----------
@@ -193,6 +194,42 @@ const PROPS = {
   sparkles: () => sparkle(70, 130, 30) + sparkle(448, 120, 24) + sparkle(456, 300, 16) + sparkle(60, 300, 14),
   tears: () => `<path d="M 120 250 q -22 40 -4 60 q 18 -14 4 -60 Z" fill="#9fe2ff" stroke="#2a8fd6" stroke-width="4"/>
     <path d="M 392 250 q -18 46 4 60 q 22 -14 -4 -60 Z" fill="#9fe2ff" stroke="#2a8fd6" stroke-width="4"/>`,
+  tap: () => `<circle cx="384" cy="250" r="20" fill="none" stroke="#ff4f8b" stroke-width="6" opacity=".9"/>
+    <circle cx="384" cy="250" r="38" fill="none" stroke="#ff4f8b" stroke-width="5" opacity=".5"/>`
+    + sleeve(404, 372, 22) + finger(392, 318, 58, -8) + palm(398, 344, 27)
+    + heart(456, 180, 22) + heart(470, 260, 15, '#ff7fb0') + heart(80, 140, 26) + heart(62, 230, 16, '#ff7fb0'),
+  follow: () => `<circle cx="420" cy="312" r="44" fill="#ff2f6d" stroke="#a3134a" stroke-width="7"/>
+    <path d="M 420 290 V 334 M 398 312 H 442" stroke="#fff" stroke-width="13" stroke-linecap="round"/>`
+    + sparkle(460, 250, 18) + heart(80, 140, 26),
+  shh: () => sleeve(256, 392, 0) + finger(256, 336, 62, 0) + palm(256, 362, 26) + sparkle(80, 150, 24) + sparkle(440, 140, 18),
+  mug: () => `<path d="M 398 300 q -12 -18 0 -36 q 12 -18 0 -36 M 420 296 q -12 -18 0 -36 q 12 -18 0 -36 M 442 300 q -12 -18 0 -36"
+      fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity=".95"/>
+    <path d="M 398 300 q -12 -18 0 -36 q 12 -18 0 -36 M 420 296 q -12 -18 0 -36 q 12 -18 0 -36 M 442 300 q -12 -18 0 -36"
+      fill="none" stroke="#c9b8e8" stroke-width="4" stroke-linecap="round"/>`
+    + sleeve(372, 384, 18)
+    + `<path d="M 456 330 q 32 0 32 24 q 0 24 -32 24" fill="none" stroke="#a3134a" stroke-width="18"/>
+    <path d="M 456 330 q 32 0 32 24 q 0 24 -32 24" fill="none" stroke="#ffb3cf" stroke-width="7"/>
+    <rect x="374" y="310" width="84" height="84" rx="14" fill="#ffb3cf" stroke="#a3134a" stroke-width="7"/>
+    <ellipse cx="416" cy="314" rx="38" ry="8" fill="#8a4a2a"/>`
+    + heart(416, 356, 16, '#fff', '#ff4f8b') + palm(372, 362, 22),
+  heartLeft: () => heart(80, 140, 28) + heart(58, 220, 16, '#ff7fb0'),
+  canvas: () => `<g transform="rotate(8 412 300)">
+      <rect x="350" y="236" width="124" height="104" rx="6" fill="#ffffff" stroke="#b07a3a" stroke-width="10"/>
+      ${heart(412, 292, 30)}
+      <path d="M 372 322 q 20 -8 40 0 t 40 0" fill="none" stroke="#3a9de0" stroke-width="5" stroke-linecap="round"/>
+    </g>` + sleeve(374, 380, 16) + palm(370, 350, 22) + sparkle(80, 140, 24),
+  point: () => sleeve(398, 376, 24) + finger(404, 336, 62, 72) + palm(396, 346, 27)
+    + sparkle(484, 292, 22) + `<path d="M 470 256 l 12 -14 M 492 270 l 18 -6 M 470 330 l 14 10" stroke="#ff4f8b" stroke-width="7" stroke-linecap="round"/>`,
+  gift: () => sleeve(380, 384, 18) + `
+    <rect x="370" y="300" width="96" height="80" rx="8" fill="#ff7fb0" stroke="#a3134a" stroke-width="7"/>
+    <rect x="362" y="284" width="112" height="28" rx="8" fill="#ff4f8b" stroke="#a3134a" stroke-width="7"/>
+    <rect x="408" y="284" width="20" height="96" fill="#ffd84a" stroke="#c08a00" stroke-width="5"/>
+    <path d="M 418 284 C 380 250, 372 290, 418 284 C 464 250, 472 290, 418 284 Z" fill="#ffd84a" stroke="#c08a00" stroke-width="6" stroke-linejoin="round"/>`
+    + palm(372, 346, 22) + heart(80, 140, 26),
+  night: () => `<path d="M 96 72 A 50 50 0 1 0 150 150 A 40 40 0 1 1 96 72 Z" fill="#fff3a0" stroke="#d08a00" stroke-width="6" stroke-linejoin="round"/>
+    <text x="420" y="128" font-family="Inter" font-weight="900" font-size="64" fill="#8c7bff" stroke="#fff" stroke-width="10" paint-order="stroke">Z</text>
+    <text x="462" y="82" font-family="Inter" font-weight="900" font-size="42" fill="#8c7bff" stroke="#fff" stroke-width="8" paint-order="stroke">z</text>`
+    + sparkle(450, 300, 14),
   none: () => '',
 };
 
@@ -241,7 +278,7 @@ const defs = `
 
 function mira(e, superfan) {
   const props = [].concat(e.props || []);
-  const front = props.filter((p) => ['wave', 'peace', 'heartHold'].includes(p));
+  const front = props.filter((p) => ['wave', 'peace', 'heartHold', 'tap', 'shh', 'mug', 'canvas', 'point', 'gift'].includes(p));
   const back = props.filter((p) => !front.includes(p));
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 512 512">
     ${defs}
@@ -275,6 +312,11 @@ const FANS = [
   { id: '08-narisuyu', label: 'НАРИСУЮ!', eyes: 'happy', mouth: 'smile', props: 'palette' },
   { id: '09-igrayu', label: 'ИГРАЮ ♪', eyes: 'happy', mouth: 'cat', props: 'piano' },
   { id: '10-spasibo', label: 'СПАСИБО', eyes: 'happy', mouth: 'smile', props: 'heartHold', blush: true },
+  { id: '11-layki', label: 'ЛАЙКИ!', eyes: 'star', mouth: 'open', props: 'tap' },
+  { id: '12-podpishis', label: 'ПОДПИШИСЬ', eyes: 'wink', mouth: 'open', props: 'follow' },
+  { id: '13-tss', label: 'ТСС…', eyes: 'happy', mouth: 'small', props: 'shh', blush: true },
+  { id: '14-uyut', label: 'УЮТ', eyes: 'happy', mouth: 'cat', props: 'mug', blush: true },
+  { id: '15-poka', label: 'ПОКА!', eyes: 'wink', mouth: 'cat', props: ['wave', 'heartLeft'] },
 ];
 const SUPERFANS = [
   { id: '01-vip', label: 'VIP', eyes: 'wink', mouth: 'smile', props: 'peace' },
@@ -285,6 +327,10 @@ const SUPERFANS = [
   { id: '06-ne-uhodi', label: 'НЕ УХОДИ', eyes: 'teary', mouth: 'wobble', props: 'none' },
   { id: '07-oy', label: 'ОЙ…', eyes: 'shy', mouth: 'small', props: 'none', blush: true },
   { id: '08-lyublyu-vas', label: 'ЛЮБЛЮ ВАС', eyes: 'happy', mouth: 'open', props: 'hearts', blush: true },
+  { id: '09-risuyu-tebe', label: 'РИСУЮ ТЕБЕ', eyes: 'wink', mouth: 'smile', props: 'canvas', blush: true },
+  { id: '10-zametila', label: 'ЗАМЕТИЛА!', eyes: 'star', mouth: 'open', props: 'point' },
+  { id: '11-dlya-tebya', label: 'ДЛЯ ТЕБЯ', eyes: 'happy', mouth: 'open', props: 'gift', blush: true },
+  { id: '12-spoki', label: 'СПОКИ', eyes: 'sleepy', mouth: 'o', props: 'night' },
 ];
 
 (async () => {
