@@ -276,9 +276,12 @@ const defs = `
     </filter>
   </defs>`;
 
+// реквизит, который рисуется поверх лица (руки и предметы в руках)
+const FRONT = new Set(['wave', 'peace', 'heartHold', 'tap', 'shh', 'mug', 'canvas', 'point', 'gift']);
+
 function mira(e, superfan) {
   const props = [].concat(e.props || []);
-  const front = props.filter((p) => ['wave', 'peace', 'heartHold', 'tap', 'shh', 'mug', 'canvas', 'point', 'gift'].includes(p));
+  const front = props.filter((p) => FRONT.has(p));
   const back = props.filter((p) => !front.includes(p));
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 512 512">
     ${defs}
@@ -333,7 +336,12 @@ const SUPERFANS = [
   { id: '12-spoki', label: 'СПОКИ', eyes: 'sleepy', mouth: 'o', props: 'night' },
 ];
 
-(async () => {
+module.exports = {
+  heart, star, starPts, sparkle, note, hairBack, body, braid, face, cheeks, bangs, tiara, label, defs, mira,
+  EYES, MOUTHS, PROPS, FRONT, finger, palm, sleeve, at, mirror, brow, lash, SKIN, LINE, EYE_Y, EL, ER, M,
+};
+
+if (require.main === module) (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: SIZE, height: SIZE } });
   for (const [dir, list, sup] of [['fans', FANS, false], ['superfans', SUPERFANS, true]]) {
